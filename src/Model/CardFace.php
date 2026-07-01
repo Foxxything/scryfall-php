@@ -4,8 +4,14 @@ declare(strict_types=1);
 
 namespace Foxxything\Scryfall\Model;
 
+use Foxxything\Scryfall\Enum\Color;
+
 final readonly class CardFace
 {
+    /**
+     * @param Color[]|null $colors
+     * @param Color[]|null $colorIndicator
+     */
     public function __construct(
         public string $name,
         public string $manaCost,
@@ -38,8 +44,8 @@ final readonly class CardFace
             manaCost: $data['mana_cost'] ?? '',
             typeLine: $data['type_line'] ?? null,
             oracleText: $data['oracle_text'] ?? null,
-            colors: $data['colors'] ?? null,
-            colorIndicator: $data['color_indicator'] ?? null,
+            colors: isset($data['colors']) ? Color::fromArray($data['colors']) : null,
+            colorIndicator: isset($data['color_indicator']) ? Color::fromArray($data['color_indicator']) : null,
             power: $data['power'] ?? null,
             toughness: $data['toughness'] ?? null,
             loyalty: $data['loyalty'] ?? null,

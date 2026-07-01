@@ -4,8 +4,29 @@ declare(strict_types=1);
 
 namespace Foxxything\Scryfall\Model;
 
+use Foxxything\Scryfall\Enum\Color;
+use Foxxything\Scryfall\Enum\Legality;
+use Foxxything\Scryfall\Enum\Rarity;
+
 final readonly class Card
 {
+    /**
+     * @param int[]|null $multiverseIds
+     * @param Color[] $colors
+     * @param Color[] $colorIdentity
+     * @param Color[]|null $colorIndicator
+     * @param string[] $keywords
+     * @param array<string, Legality> $legalities
+     * @param string[]|null $producedMana
+     * @param RelatedCardObject[]|null $allParts
+     * @param CardFace[]|null $cardFaces
+     * @param string[]|null $frameEffects
+     * @param string[] $finishes
+     * @param string[] $games
+     * @param array<string, string> $prices
+     * @param array<string, string> $relatedUris
+     * @param array<string, string>|null $purchaseUris
+     */
     public function __construct(
         // Core fields
         public string $id,
@@ -44,8 +65,8 @@ final readonly class Card
         public ?int $edhrecRank,
         public ?int $pennyRank,
         public ?array $producedMana,
-        public ?array $allParts,       // RelatedCardObject[]
-        public ?array $cardFaces,      // CardFace[]
+        public ?array $allParts,
+        public ?array $cardFaces,
 
         // Print fields
         public string $set,
@@ -53,7 +74,7 @@ final readonly class Card
         public string $setId,
         public string $setType,
         public string $collectorNumber,
-        public string $rarity,
+        public Rarity $rarity,
         public bool $booster,
         public bool $digital,
         public bool $fullArt,
@@ -109,11 +130,11 @@ final readonly class Card
             cmc: (float) ($data['cmc'] ?? 0),
             typeLine: $data['type_line'],
             oracleText: $data['oracle_text'] ?? null,
-            colors: $data['colors'] ?? [],
-            colorIdentity: $data['color_identity'] ?? [],
-            colorIndicator: $data['color_indicator'] ?? null,
+            colors: Color::fromArray($data['colors'] ?? []),
+            colorIdentity: Color::fromArray($data['color_identity'] ?? []),
+            colorIndicator: isset($data['color_indicator']) ? Color::fromArray($data['color_indicator']) : null,
             keywords: $data['keywords'] ?? [],
-            legalities: $data['legalities'] ?? [],
+            legalities: array_map(fn (string $status) => Legality::from($status), $data['legalities'] ?? []),
             power: $data['power'] ?? null,
             toughness: $data['toughness'] ?? null,
             loyalty: $data['loyalty'] ?? null,
@@ -135,7 +156,7 @@ final readonly class Card
             setId: $data['set_id'],
             setType: $data['set_type'],
             collectorNumber: $data['collector_number'],
-            rarity: $data['rarity'],
+            rarity: Rarity::from($data['rarity']),
             booster: $data['booster'] ?? false,
             digital: $data['digital'] ?? false,
             fullArt: $data['full_art'] ?? false,
@@ -172,6 +193,11 @@ final readonly class Card
     public function isMultiFaced(): bool
     {
         return $this->cardFaces !== null;
+    }
+
+    public function isLegalIn(string $format): bool
+    {
+        return ($this->legalities[$format] ?? null) === Legality::Legal;
     }
 
     /** Returns this card's primary image, falling back to the front face if multi-faced */
