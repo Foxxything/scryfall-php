@@ -11,6 +11,7 @@ enum Color: string
     case Black = 'B';
     case Red = 'R';
     case Green = 'G';
+    case Colorless = 'C';
 
     public function label(): string
     {
@@ -20,6 +21,7 @@ enum Color: string
             self::Black => 'Black',
             self::Red => 'Red',
             self::Green => 'Green',
+            self::Colorless => 'Colorless',
         };
     }
 

@@ -7,6 +7,7 @@ namespace Foxxything\Scryfall\Model;
 use Foxxything\Scryfall\Enum\Color;
 use Foxxything\Scryfall\Enum\Legality;
 use Foxxything\Scryfall\Enum\Rarity;
+use Foxxything\Scryfall\ValueObject\ManaCost;
 
 final readonly class Card
 {
@@ -208,5 +209,10 @@ final readonly class Card
         }
 
         return $this->cardFaces[0]?->imageUris?->{$size} ?? null;
+    }
+
+    public function parsedManaCost(): ManaCost
+    {
+        return ManaCost::parse($this->manaCost ?? '');
     }
 }

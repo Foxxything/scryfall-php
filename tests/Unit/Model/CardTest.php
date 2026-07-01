@@ -7,6 +7,7 @@ namespace Foxxything\Scryfall\Tests\Unit\Model;
 use Foxxything\Scryfall\Enum\Color;
 use Foxxything\Scryfall\Enum\Legality;
 use Foxxything\Scryfall\Enum\Rarity;
+use Foxxything\Scryfall\Enum\Symbol;
 use Foxxything\Scryfall\Model\Card;
 use PHPUnit\Framework\TestCase;
 
@@ -92,5 +93,19 @@ final class CardTest extends TestCase
         $this->assertTrue($card->isMultiFaced());
         $this->assertCount(2, $card->cardFaces);
         $this->assertNotEmpty($card->cardFaces[0]->manaCost);
+    }
+
+    public function testParsedManaCostWorksFromRealCardFixture(): void
+    {
+        $raw = json_decode(
+            file_get_contents(__DIR__ . '/../../Fixtures/card-lightning-bolt.json'),
+            true
+        );
+        $card = \Foxxything\Scryfall\Model\Card::fromArray($raw);
+
+        $cost = $card->parsedManaCost();
+
+        $this->assertSame([Symbol::Red], $cost->symbols);
+        $this->assertSame([Color::Red], $cost->colors());
     }
 }
