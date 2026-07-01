@@ -1,5 +1,6 @@
 {
   "name": "foxxything/scryfall-php",
+  "description": "A typed PHP wrapper for the Scryfall REST API",
   "license": "MIT",
   "require": {
     "php": "^8.3",
