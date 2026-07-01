@@ -1,5 +1,6 @@
 {
   "name": "foxxything/scryfall-php",
+  "license": "MIT",
   "require": {
     "php": "^8.3",
     "guzzlehttp/guzzle": "^7.0"
