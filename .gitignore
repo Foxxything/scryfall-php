@@ -1,0 +1,41 @@
+# Composer
+/vendor/
+composer.phar
+# Keep composer.lock committed for applications; remove this line if this is a published library
+# composer.lock
+
+# PHPUnit
+.phpunit.result.cache
+.phpunit.cache/
+/build/
+/coverage/
+
+# Environment / secrets
+.env
+.env.local
+.env.*.local
+
+# PhpStorm / JetBrains
+.idea/
+*.iml
+out/
+
+# OS-generated files
+Thumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# Logs
+*.log
+
+# Test fixtures downloaded manually (optional — see note below)
+# tests/Fixtures/*.json
+
+# Editor backups
+*.swp
+*.swo
+*~
+
+# Windows-specific
+[Dd]esktop.ini
+ehthumbs.db
