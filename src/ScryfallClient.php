@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Foxxything\Scryfall;
 
 use Foxxything\Scryfall\Http\HttpClient;
+use Foxxything\Scryfall\Model\BulkData;
 use Foxxything\Scryfall\Model\Card;
 use Foxxything\Scryfall\Model\List_;
 
@@ -34,5 +35,17 @@ final class ScryfallClient
         ]);
 
         return List_::fromArray($data, Card::fromArray(...));
+    }
+
+    public function bulkData(): List_
+    {
+        $data = $this->http->get('/bulk-data');
+        return List_::fromArray($data, BulkData::fromArray(...));
+    }
+
+    public function bulkDataByType(string $type): BulkData
+    {
+        $data = $this->http->get("/bulk-data/{$type}");
+        return BulkData::fromArray($data);
     }
 }
